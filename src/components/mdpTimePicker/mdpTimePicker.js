@@ -2,18 +2,16 @@
 
 function TimePickerCtrl($scope, $mdDialog, time, autoSwitch, $mdMedia) {
 	var self = this;
-
-    this.$onInit = function () {
-        self.VIEW_HOURS = 1;
-        self.VIEW_MINUTES = 2;
-        self.currentView = self.VIEW_HOURS;
-        self.time = moment(time);
-        self.autoSwitch = !!autoSwitch;
-        self.clockHours = parseInt(self.time.format("h"));
-        self.clockMinutes = parseInt(self.time.minutes());
-        $scope.$mdMedia = $mdMedia;
-    };
+    this.VIEW_HOURS = 1;
+    this.VIEW_MINUTES = 2;
+    this.currentView = this.VIEW_HOURS;
+    this.time = moment(time);
+    this.autoSwitch = !!autoSwitch;
     
+    this.clockHours = parseInt(this.time.format("h"));
+    this.clockMinutes = parseInt(this.time.minutes());
+    
+	$scope.$mdMedia = $mdMedia;
 	
 	this.switchView = function() {
 	    self.currentView = self.currentView == self.VIEW_HOURS ? self.VIEW_MINUTES : self.VIEW_HOURS;
@@ -39,37 +37,31 @@ function TimePickerCtrl($scope, $mdDialog, time, autoSwitch, $mdMedia) {
 }
 
 function ClockCtrl($scope) {
+    var self = this;
     var TYPE_HOURS = "hours";
     var TYPE_MINUTES = "minutes";
-    var self = this;
 
-    this.$onInit = function() {
-        this.STEP_DEG = 360 / 12;
+    this.$onInit = function () {
+        self.STEP_DEG = 360 / 12;
         self.steps = [];
-
         self.CLOCK_TYPES = {
-            "hours": {
-                range: 12
-            },
-            "minutes": {
-                range: 60
-            }
+            "hours": { range: 12, },
+            "minutes": { range: 60, }
         };
         self.type = self.type || "hours";
-        switch(self.type) {
+        switch (self.type) {
             case TYPE_HOURS:
-                for(var i = 1; i <= 12; i++)
+                for (var i = 1; i <= 12; i++)
                     self.steps.push(i);
                 self.selected = self.time.hours() || 0;
-                if(self.selected > 12) self.selected -= 12;
+                if (self.selected > 12) self.selected -= 12;
 
                 break;
             case TYPE_MINUTES:
-                for(var i = 5; i <= 55; i+=5)
+                for (var i = 5; i <= 55; i += 5)
                     self.steps.push(i);
                 self.steps.push(0);
                 self.selected = self.time.minutes() || 0;
-
                 break;
         }
     };
